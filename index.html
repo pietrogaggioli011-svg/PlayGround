@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Thunder Ninja: Cyber Storm</title>
+<style>
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#05070d;font-family:"Trebuchet MS",Arial,sans-serif;color:#edfaff;image-rendering:auto}
+#game{position:fixed;inset:0;width:100%;height:100%;display:block;image-rendering:pixelated}
+#hud{position:fixed;inset:0;pointer-events:none;text-shadow:0 2px 0 #07101b}
+.topbar{position:absolute;left:3.2%;top:3%;width:46%;max-width:520px}.brand{font-size:clamp(12px,1.5vw,21px);font-weight:900;font-style:italic;letter-spacing:1.5px}.brand b{color:#58caff}.bars{display:flex;gap:8px;margin-top:7px}.bar{height:12px;border:2px solid #aeeaff;background:#101727;transform:skewX(-12deg);box-shadow:0 0 12px #1baeff44}.bar i{display:block;height:100%;background:linear-gradient(90deg,#ff345e,#ff7754);width:100%;transition:width .15s}.bar.thunder i{background:linear-gradient(90deg,#0cbcff,#78edff);box-shadow:0 0 12px #38cfff}.bar{width:220px}.bar.thunder{width:160px}
+.area{position:absolute;right:4%;top:3.5%;text-align:right}.area .eyebrow{font-size:10px;color:#70b8d4;letter-spacing:3px}.area h1{margin:2px 0 0;font-size:clamp(16px,2.2vw,30px);font-style:italic;letter-spacing:2px}
+#combo{position:absolute;left:3.5%;top:19%;font-weight:900;font-style:italic;opacity:0;transition:.12s}.comboNum{font-size:clamp(38px,6vw,68px);color:#68dcff}.comboLabel{display:block;font-size:12px;letter-spacing:5px;color:#fff}
+#hint{position:absolute;bottom:4.5%;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:1.5px;color:#aeeaff;text-align:center;white-space:nowrap}.controls{position:absolute;bottom:2.5%;right:3%;display:flex;gap:5px}.key{border:1px solid #5e91a7;background:#08121ab8;border-radius:4px;padding:5px 7px;font-size:9px;color:#bfeeff}
+#start,#gameover{position:absolute;inset:0;background:linear-gradient(90deg,#07111de8 0%,#07111d99 48%,transparent 78%);pointer-events:auto;display:flex;align-items:center;padding-left:7%;transition:.35s}.panel{max-width:580px}.kicker{color:#55cfff;font-weight:900;letter-spacing:5px;font-size:12px}.title{font-size:clamp(46px,7vw,94px);line-height:.82;font-style:italic;margin:16px 0 18px;letter-spacing:-4px;text-shadow:5px 5px 0 #0b2740,0 0 35px #26c5ff55}.title span{display:block;color:#67d8ff;font-size:.72em}.panel p{max-width:470px;line-height:1.6;color:#bad1dc;font-size:13px}.startbtn{margin-top:20px;border:0;clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);background:linear-gradient(90deg,#168ed1,#58dcff);color:#04101a;font-weight:900;font-size:15px;letter-spacing:2px;padding:15px 34px;cursor:pointer}.mode{margin-top:14px;font-size:11px;color:#87acc0}.mode button{border:1px solid #3d6680;background:#091827;color:#aeeaff;padding:7px 10px;margin-right:5px;cursor:pointer}.mode button.active{background:#55cfff;color:#07111b}
+#gameover{display:none;z-index:20;text-align:center;justify-content:center;padding:0;background:#07111dcf}.gameoverbox h2{font-size:clamp(45px,8vw,90px);font-style:italic;margin:0}.gameoverbox p{color:#9fc3d2}
+#touch{display:none;position:absolute;inset:0;pointer-events:none}.touchpad{position:absolute;bottom:20px;width:150px;height:150px;pointer-events:auto}.touchpad b{position:absolute;border:1px solid #78cfea55;border-radius:50%;background:#09172555}.touchpad .left{left:8px;top:48px;width:48px;height:48px}.touchpad .right{right:8px;top:48px;width:48px;height:48px}.touchpad .up{left:51px;top:5px;width:48px;height:48px}.touchpad .down{left:51px;bottom:5px;width:48px;height:48px}.actions{position:absolute;right:18px;bottom:24px;width:150px;height:150px;pointer-events:auto}.actions b{position:absolute;width:58px;height:58px;border:1px solid #78cfea77;border-radius:50%;background:#09172577;text-align:center;line-height:58px;color:#cdf4ff;font-weight:900}.actions .atk{right:0;top:46px}.actions .jump{left:8px;top:10px}.actions .rush{left:8px;bottom:0}
+@media(pointer:coarse){#touch{display:block}.controls{display:none}#hint{bottom:170px}}
+@media(max-width:700px){.topbar{width:70%}.bar{width:150px}.bar.thunder{width:100px}.area{top:2.5%}.controls{display:none}.panel p{max-width:360px}.mode{max-width:360px}}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<div id="hud">
+ <div class="topbar"><div class="brand">THUNDER <b>NINJA</b></div><div class="bars"><div class="bar"><i id="hp"></i></div><div class="bar thunder"><i id="energy"></i></div></div></div>
+ <div class="area"><div class="eyebrow">SECTOR 01</div><h1 id="sector">NEO KYOTO</h1></div>
+ <div id="combo"><span class="comboNum">12x</span><span class="comboLabel">COMBO</span></div>
+ <div id="hint">A/D MOVE · W JUMP · J PUNCH · K KICK · L THUNDER RUSH · SHIFT DASH</div>
+ <div class="controls"><span class="key">J PUNCH</span><span class="key">K KICK</span><span class="key">L RUSH</span><span class="key">W JUMP</span></div>
+ <div id="start"><div class="panel"><div class="kicker">CYBER STORM // 2088</div><div class="title">THUNDER<span>NINJA</span></div><p>Infiltrati nella rete d’acciaio. Sfonda le difese del Corpo Mecha, incendia i circuiti e raggiungi il cuore della tempesta.</p><button class="startbtn" id="startbtn">INIZIA OPERAZIONE</button><div class="mode">MODALITÀ <button class="active" id="solo">SOLO</button><button id="coop">CO-OP 2P</button></div></div></div>
+ <div id="gameover"><div class="gameoverbox"><h2 id="gameoverTitle">MISSION FAILED</h2><p id="gameoverText">Il circuito è stato compromesso.</p><button class="startbtn" id="retry">RIPROVA</button></div></div>
+ <div id="touch"><div class="touchpad"><b class="left" data-key="a"></b><b class="right" data-key="d"></b><b class="up" data-key="w"></b><b class="down" data-key="s"></b></div><div class="actions"><b class="jump" data-key="w">↑</b><b class="atk" data-key="j">攻</b><b class="rush" data-key="l">⚡</b></div></div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
